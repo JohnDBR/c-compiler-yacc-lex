@@ -1,0 +1,59 @@
+#include<stdio.h>
+a <-- 2
+main (void)
+{ int i;
+ int j;
+ char c;
+ char cadena
+ float z;
+ char cad;
+ z=14.9e-8;
+ z=12.9;
+ cadena="Hola";
+ scanf ("%d",i);
+ i=i*2;
+ printf ("El doble es %d",i);
+}
+
+// int main()
+// {
+//    int x = 1;
+//    if (x == 1)
+//       printf("x is equal to one.\n");
+//    else
+//       printf("For comparison use '==' as '=' is the assignment operator.\n");
+//    return 0;
+// }
+
+// #include <stdio.h>
+// int main()
+// {
+//   int c = 1;  // Initializing variable
+//   while (c <= 10)  // While loop will execute till the condition is true
+//   {
+//     printf("%d ", c);  // Note the space after %d for gap in the numbers we want in output
+//     c++;
+//   }
+//   return 0;
+// }
+
+// int main()
+// {
+//   int n, first = 0, second = 1, next, c;
+//   printf('Enter the number of terms\n');
+//   scanf("%d", &n);
+//   printf("First %d terms of Fibonacci series are:\n", n);
+//   for (c = 0; c < n; c++)
+//   {	
+//     if (c <= 1)
+//       next = c;
+//     else
+//     {
+//       next = first + second;
+//       first = second;
+//       second = next;
+//     }
+//     printf("%d\n", next);
+//   }
+//   return 0;
+// }
