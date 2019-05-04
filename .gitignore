@@ -4,5 +4,7 @@
 # or operating system, you probably want to add a global ignore instead:
 #   git config --global core.excludesfile '~/.gitignore_global'
 
-# Ignore the compiled C files by the commands
+# Ignore the compiled C and headings files by the commands
 /*.c
+/*.h
+
