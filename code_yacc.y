@@ -1,4 +1,5 @@
 %locations
+%define parse.error verbose
 
 %{
 #include <stdio.h>
@@ -47,8 +48,6 @@
 %token OP_INCREMENT 
 %token OP_DECREMENT
 
-%token JUMP_LINE
-
 %token '='
 %token '('
 %token ')'
@@ -76,20 +75,11 @@ PROGRAM:
   | OPTIONAL_DECLARATION BEGIN_FUNCTION {printf("PROGRAM RIGHT\n");}
   ;
 
-// OPTIONAL_JUMP:
-//     JUMP {printf("JUMP EXISTS\n");}
-//   | /* NULL */ {printf("JUMP NULL\n");}
-//   ;
-  
-// JUMP:  
-//     JUMP_LINE
-//   | JUMP_LINE OPTIONAL_JUMP
-//   ;
-
 DECLARATION:
     PRIMITIVE ID '=' CTES ';' {printf("DECLARATION LEFT\n");}
   | PRIMITIVE ID '=' CTES DECLARATION_LIST ';' {printf("DECLARATION RIGHT - ");}
-  ;
+  | PRIMITIVE ID ';'
+   ;
 
 OPTIONAL_DECLARATION:
     DECLARATION {printf("DECLARATION EXISTS\n");}
@@ -225,8 +215,6 @@ MATH_OPS:
   | '*' {printf("*\n");}
   | '/' {printf("/\n");}
   | '%' {printf("% \n");}
-  | '<' {printf("<\n");}
-  | '>' {printf(">\n");}
   ;
 
 LOGIC_OPS:   
@@ -236,6 +224,8 @@ LOGIC_OPS:
   | OP_NEQ {printf("OP_NEQ\n");}
   | OP_LEQ {printf("OP_LEQ\n");}
   | OP_GEQ {printf("OP_GEQ\n");}
+  | '<' {printf("<\n");}
+  | '>' {printf(">\n");}
   ;
 
 ARGS_EXPRESSION:
