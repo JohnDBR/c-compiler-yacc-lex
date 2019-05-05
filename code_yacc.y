@@ -88,9 +88,10 @@ JUMP:
   ;
 
 DECLARATION:
-    J PRIMITIVE J ID J '=' J CTES J ';' J {printf("DECLARATION LEFT\n");}
-  | J PRIMITIVE J ID J '=' J CTES J DECLARATION_LIST J ';' J {printf("DECLARATION RIGHT - ");}
-  ;
+    PRIMITIVE J ID J '=' J CTES J ';' J {printf("DECLARATION LEFT\n");}
+  | PRIMITIVE J ID J '=' J CTES J DECLARATION_LIST ';' J {printf("DECLARATION RIGHT - ");}
+  | PRIMITIVE J ID J ';' J
+   ;
 
 OPTIONAL_DECLARATION:
     J DECLARATION J {printf("DECLARATION EXISTS\n");}
@@ -202,9 +203,9 @@ ASSIGN_MATH_EXPRESSION:
 
 MATH_EXPRESSION:
     J EXPRESSION J MATH_OPS J EXPRESSION J {printf("EXPRESSION MATH_OPS EXPRESSION\n");}
-  | J OP_INCREMENT J EXPRESSION J {printf("OP_INCREMENT EXPRESSION\n");}
+  | J OP_INCREMENT J ID J {printf("OP_INCREMENT EXPRESSION\n");}
   | J ID J OP_INCREMENT J {printf("ID OP_INCREMENT\n");}
-  | J OP_DECREMENT J EXPRESSION J {printf("OP_DECREMENT EXPRESSION\n");}
+  | J OP_DECREMENT J ID J {printf("OP_DECREMENT EXPRESSION\n");}
   | J ID J OP_DECREMENT J {printf("ID OP_DECREMENT\n");}
   ;
 
@@ -226,8 +227,6 @@ MATH_OPS:
   | '*' {printf("*\n");}
   | '/' {printf("/\n");}
   | '%' {printf("%\n");}
-  | '<' {printf("<\n");}
-  | '>' {printf(">\n");}
   ;
 
 LOGIC_OPS:   
@@ -237,6 +236,8 @@ LOGIC_OPS:
   | OP_NEQ {printf("OP_NEQ\n");}
   | OP_LEQ {printf("OP_LEQ\n");}
   | OP_GEQ {printf("OP_GEQ\n");}
+  | '<' {printf("<\n");}
+  | '>' {printf(">\n");}
   ;
 
 ARGS_EXPRESSION:
