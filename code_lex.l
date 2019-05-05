@@ -114,7 +114,7 @@ ERROR 		[0-9]+[0-9a-zA-Z]+
 
 " "				{fprintf(yyout, " ");}	
 \t 				{fprintf(yyout, "\t");}
-\n				{fprintf(yyout, "\nLINEA: %d - ", lines);++lines;}
+\n				{fprintf(yyout, "\nLINEA: %d - ", lines);++lines; }\\return JUMP_LINE;}
 \r				{fprintf(yyout, "\r");}
 
 ";"				{fprintf(yyout, "PUNTO-COMA:%s", yytext); return ';';}
