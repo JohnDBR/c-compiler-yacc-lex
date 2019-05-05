@@ -88,6 +88,7 @@ ERROR 		[0-9]+[0-9a-zA-Z]+
 
 "(" 			{fprintf(yyout, "PARENT-A:%s", yytext); return '(';}
 ")" 			{fprintf(yyout, "PARENT-C:%s", yytext); return ')';}
+\"				{fprintf(yyout, "QUOTE:%s", yytext); return '"';}
 
 "*"				{fprintf(yyout, "OP-MULT:%s", yytext); return '*';}
 "+"				{fprintf(yyout, "OP-SUMA:%s", yytext); return '+';}
@@ -160,45 +161,4 @@ ERROR 		[0-9]+[0-9a-zA-Z]+
 				}
 
 %%
-
-// int yywrap(void){return 0;}
-// int main(int argc, char *argv[]) 
-// {
-// 	printf("Lo que has recibido en el argv[1] es: %s\n", argv[1]);
-// 	FILE *fp = fopen(argv[1], "r");
-// 	FILE *out_file = fopen("salida.txt", "w"); // write only
-//     yyin = fp;
-//     yyout = out_file;
-//     yylex();
-
-//     fprintf(out_file,"\n\nTABLA DE INDENTIFICADORES\n");
-//     fprintf(out_file, "Hay %d identificadores\n", idC-1);
-//     // fprintf(out_file, "%s", ids);
-//     if (idC>1)
-//     {
-//     	int i=0;
-//     	fprintf(out_file, "Id=");
-//     	while (i < strlen(ids)) 
-//     	{    
-//     		fprintf(out_file, "%c", ids[i]);
-//     		if (ids[i] == ';')
-//     		{
-//     			fprintf(out_file, " Id=");
-//     		}
-// 		    i = i + 1;
-// 		}
-//     }
-//     fprintf(out_file, "\n");
-
-//     fprintf(out_file,"\n\nERRORES LEXICOS\n");
-//     fprintf(out_file, "Hay %d errores lexicos\n", lexErrorsC-1);
-//     fprintf(out_file, "%s", lexErrors);
-//     fprintf(out_file, "\n");
-
-// 	fprintf(out_file,"\n\nHay %d lineas de codigo\n", lines);
-
-//     fclose(out_file);
-//     fclose(fp);
-//     return(1);
-// }
 
