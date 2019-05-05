@@ -72,23 +72,23 @@
 %%
 
 PROGRAM: 
-    LIBRARY OPTIONAL_DECLARATION BEGIN_FUNCTION {printf("PROGRAM LEFT\n");}
-  | OPTIONAL_DECLARATION BEGIN_FUNCTION {printf("PROGRAM RIGHT\n");}
+    J LIBRARY J OPTIONAL_DECLARATION J BEGIN_FUNCTION {printf("PROGRAM LEFT\n");}
+  | J OPTIONAL_DECLARATION J BEGIN_FUNCTION {printf("PROGRAM RIGHT\n");}
   ;
 
-// OPTIONAL_JUMP:
-//     JUMP {printf("JUMP EXISTS\n");}
-//   | /* NULL */ {printf("JUMP NULL\n");}
-//   ;
+J:
+    JUMP //{printf("JUMP EXISTS\n");}
+  | /* NULL */ //{printf("JUMP NULL\n");}
+  ;
   
-// JUMP:  
-//     JUMP_LINE
-//   | JUMP_LINE OPTIONAL_JUMP
-//   ;
+JUMP:  
+    JUMP_LINE
+  | JUMP_LINE JUMP
+  ;
 
 DECLARATION:
-    PRIMITIVE ID '=' CTES ';' {printf("DECLARATION LEFT\n");}
-  | PRIMITIVE ID '=' CTES DECLARATION_LIST ';' {printf("DECLARATION RIGHT - ");}
+    PRIMITIVE J ID J '=' J CTES J ';' J {printf("DECLARATION LEFT\n");}
+  | PRIMITIVE J ID J '=' J CTES J DECLARATION_LIST ';' J {printf("DECLARATION RIGHT - ");}
   ;
 
 OPTIONAL_DECLARATION:
@@ -97,8 +97,8 @@ OPTIONAL_DECLARATION:
   ;
 
 DECLARATION_LIST:
-    ID '=' CTES {printf("DECLARATION_LIST LEFT\n");}
-  | ',' DECLARATION_LIST {printf("DECLARATION_LIST RIGHT - ");}
+    ID J '=' J EXPRESSION {printf("DECLARATION_LIST LEFT\n");}
+  | ',' J DECLARATION_LIST {printf("DECLARATION_LIST RIGHT - ");}
   ;
 
 CTES: 
@@ -113,12 +113,12 @@ STRING_CHAIN:
   '"' CHAIN {printf("STRING_CHAIN - ");} ; 
 
 CHAIN:
-    CTES CHAIN {printf("CHAIN LEFT - ");}
+    J CTES J CHAIN J {printf("CHAIN LEFT - ");}
   | '"' {printf("CHAIN RIGHT\n");}
   ;
 
 BEGIN_FUNCTION: 
-  VOID_PRIMITIVE MAIN '(' OPTIONAL_ARGS ')' '{' STATEMENT_LIST '}' {printf("BEGIN_FUNCTION\n");} ; 
+  VOID_PRIMITIVE J MAIN J '(' J OPTIONAL_ARGS J ')' J '{' J STATEMENT_LIST '}' J {printf("BEGIN_FUNCTION\n");} ; 
 
 OPTIONAL_ARGS:
       ARGS {printf("OPTIONAL_ARGS EXISTS\n");}
@@ -131,16 +131,16 @@ VOID_PRIMITIVE:
   ;
 
 STATEMENT:
-    ';' {printf("STATEMENT ;\n");}  
-  | DECLARATION {printf("DECLARATION\n");}                         
-  | EXPRESSION ';' {printf("EXPRESSION ;\n");}                    
-  | PRINT OPTIONAL_ARGS_EXPRESSION ';' {printf("PRINT OPTIONAL_ARGS_EXPRESSION ;\n");}               
-  | SCAN OPTIONAL_ARGS_EXPRESSION ';' {printf("SCAN OPTIONAL_ARGS_EXPRESSION ;\n");} 
-  | ID '=' EXPRESSION ';' {printf("ID = EXPRESSION\n");} 
-  | WHILE '(' EXPRESSION ')' STATEMENT {printf("WHILE (EXPRESSION)\n");}         
-  | IF '(' EXPRESSION ')' STATEMENT {printf("IF (EXPRESSION) STATEMENT\n");} 
-  | IF '(' EXPRESSION ')' STATEMENT ELSE STATEMENT {printf("IF (EXPRESSION) STATEMENT ELSE STATEMENT\n");} 
-  | '{' STATEMENT_LIST '}' {printf("{STATEMENSTATEMENT_LISTT_LIST\n");} 
+    ';' J {printf("STATEMENT ;\n");}  
+  | DECLARATION {printf("DECLARATION\n");}        
+  | ID J '=' J EXPRESSION ';' J {printf("ID = EXPRESSION\n");}                  
+  | EXPRESSION ';' J {printf("EXPRESSION ;\n");}                    
+  | PRINT J OPTIONAL_ARGS_EXPRESSION ';' J {printf("PRINT OPTIONAL_ARGS_EXPRESSION ;\n");}               
+  | SCAN J OPTIONAL_ARGS_EXPRESSION ';' J {printf("SCAN OPTIONAL_ARGS_EXPRESSION ;\n");} 
+  | WHILE J '(' J EXPRESSION ')' J STATEMENT {printf("WHILE (EXPRESSION)\n");}         
+  | IF J '(' J EXPRESSION ')' J STATEMENT {printf("IF (EXPRESSION) STATEMENT\n");} 
+  | IF J '(' J EXPRESSION ')' J STATEMENT ELSE J STATEMENT {printf("IF (EXPRESSION) STATEMENT ELSE STATEMENT\n");} 
+  | '{' J STATEMENT_LIST '}' J {printf("{STATEMENT_LISTT_LIST\n");} 
   | FOR_STATEMENT {printf("FOR_STATEMENT\n");} 
   // | error { printError(@$.last_column); }
   | DO_STATEMENT {printf("DO_STATEMENT\n");} 
@@ -148,37 +148,37 @@ STATEMENT:
   ;
 
 STATEMENT_LIST:
-    STATEMENT {printf("STATEMENT_LIST LEFT\n");}
-  | STATEMENT STATEMENT_LIST {printf("STATEMENT_LIST RIGHT\n");}   
+    STATEMENT J {printf("STATEMENT_LIST LEFT\n");}
+  | STATEMENT J STATEMENT_LIST {printf("STATEMENT_LIST RIGHT\n");}   
   ;
 
 FOR_STATEMENT:
-  FOR 
-  '(' ID '=' INT_CTES ';'
-  ASSIGN_LOGIC_EXPRESSION ';'
-  ASSIGN_MATH_EXPRESSION ')' 
-  STATEMENT
+  FOR J
+  '(' J ID J '=' J INT_CTES J ';' J
+  ASSIGN_LOGIC_EXPRESSION ';' J
+  ASSIGN_MATH_EXPRESSION ')' J
+  STATEMENT 
   {printf("FOR\n");}
   // | error {printError(@$.last_column);}
   ;       
 
 DO_STATEMENT: 
-  DO '{' STATEMENT '}' WHILE '(' EXPRESSION ')' ';' {printf("DO\n");} ;
+  DO J '{' J STATEMENT '}' J WHILE  J'(' J EXPRESSION ')' J ';' J {printf("DO\n");} ;
 
 SWITCH_STATEMENT:
-  SWITCH '(' EXPRESSION ')' '{' 
+  SWITCH J '(' J EXPRESSION ')' J '{' J 
   CASES
   DEFAULT_STATEMENT
   {printf("SWITCH\n");}
   ;
 
 CASES:
-    CASE EXPRESSION ':' STATEMENT BREAK ';' {printf("CASES LEFT\n");}
-  | CASE EXPRESSION ':' STATEMENT BREAK ';' CASES {printf("CASES RIGHT - ");}
+    CASE J EXPRESSION ':' J STATEMENT BREAK J ';' J {printf("CASES LEFT\n");}
+  | CASE J EXPRESSION ':' J STATEMENT BREAK J ';' J CASES {printf("CASES RIGHT - ");}
   ;
 
 DEFAULT_STATEMENT:
-    DEFAULT ':' STATEMENT '}' {printf("DEFAULT_STATEMENT LEFT\n");}
+    DEFAULT J ':' J STATEMENT '}' J {printf("DEFAULT_STATEMENT LEFT\n");}
   | '}' {printf("DEFAULT_STATEMENT RIGHT\n");}
   ;
 
@@ -188,34 +188,34 @@ INT_CTES:
   ;     
 
 EXPRESSION:
-    CTES {printf("CTES\n");}
+    CTES J {printf("CTES\n");}
 	| ASSIGN_MATH_EXPRESSION {printf("ASSIGN_MATH_EXPRESSION\n");}
   | ASSIGN_LOGIC_EXPRESSION {printf("ASSIGN_LOGIC_EXPRESSION\n");}
-  | '(' EXPRESSION ')' {printf("EXPRESSION\n");}   
+  | '(' J EXPRESSION ')' J {printf("EXPRESSION\n");}   
   ;
 
 ASSIGN_MATH_EXPRESSION:
-    ID '=' MATH_EXPRESSION {printf("ASSIGN_MATH_EXPRESSION LEFT\n");}
-  | MATH_EXPRESSION {printf("ASSIGN_MATH_EXPRESSION RIGHT\n");}
+    ID J '=' J MATH_EXPRESSION J {printf("ASSIGN_MATH_EXPRESSION LEFT\n");}
+  | MATH_EXPRESSION J {printf("ASSIGN_MATH_EXPRESSION RIGHT\n");}
   ;
 
 MATH_EXPRESSION:
-    EXPRESSION MATH_OPS EXPRESSION {printf("EXPRESSION MATH_OPS EXPRESSION\n");}
-  | OP_INCREMENT EXPRESSION {printf("OP_INCREMENT EXPRESSION\n");}
-  | ID OP_INCREMENT {printf("ID OP_INCREMENT\n");}
-  | OP_DECREMENT EXPRESSION {printf("OP_DECREMENT EXPRESSION\n");}
-  | ID OP_DECREMENT {printf("ID OP_DECREMENT\n");}
+    EXPRESSION MATH_OPS J EXPRESSION {printf("EXPRESSION MATH_OPS EXPRESSION\n");}
+  | OP_INCREMENT J EXPRESSION {printf("OP_INCREMENT EXPRESSION\n");}
+  | ID J OP_INCREMENT {printf("ID OP_INCREMENT\n");}
+  | OP_DECREMENT J EXPRESSION {printf("OP_DECREMENT EXPRESSION\n");}
+  | ID J OP_DECREMENT {printf("ID OP_DECREMENT\n");}
   ;
 
 ASSIGN_LOGIC_EXPRESSION:
-    ID '=' LOGIC_EXPRESSION {printf("LOGIC_EXPRESSION LEFT\n");}
-  | LOGIC_EXPRESSION {printf("LOGIC_EXPRESSION RIGHT - ");}
+    ID J '=' J LOGIC_EXPRESSION J {printf("LOGIC_EXPRESSION LEFT\n");}
+  | LOGIC_EXPRESSION J {printf("LOGIC_EXPRESSION RIGHT - ");}
   ;
 
 LOGIC_EXPRESSION:
-    '!' EXPRESSION {printf("!EXPRESSION\n");}
-  | EXPRESSION LOGIC_OPS EXPRESSION {printf("EXPRESSION LOGIC_OPS EXPRESSION\n");}
-  | CTE_BOOL {printf("CTE_BOOL\n");}
+    '!' J EXPRESSION {printf("!EXPRESSION\n");}
+  | EXPRESSION LOGIC_OPS J EXPRESSION {printf("EXPRESSION LOGIC_OPS EXPRESSION\n");}
+  | CTE_BOOL J {printf("CTE_BOOL\n");}
   ;
 
 MATH_OPS:
@@ -224,7 +224,7 @@ MATH_OPS:
   | '-' {printf("-\n");}
   | '*' {printf("*\n");}
   | '/' {printf("/\n");}
-  | '%' {printf("% \n");}
+  | '%' {printf("%\n");}
   | '<' {printf("<\n");}
   | '>' {printf(">\n");}
   ;
@@ -239,12 +239,12 @@ LOGIC_OPS:
   ;
 
 ARGS_EXPRESSION:
-    EXPRESSION {printf("ARGS_EXPRESSION LEFT - ");}
-  | ARGS_EXPRESSION ',' ARGS_EXPRESSION {printf("ARGS_EXPRESSION RIGHT\n");}
+    EXPRESSION J {printf("ARGS_EXPRESSION LEFT - ");}
+  | ARGS_EXPRESSION ',' J ARGS_EXPRESSION {printf("ARGS_EXPRESSION RIGHT\n");}
   ;
 
 OPTIONAL_ARGS_EXPRESSION:
-    '(' ARGS_EXPRESSION ')' {printf("OPTIONAL_ARGS_EXPRESSION EXISTS\n");}
+    '(' J ARGS_EXPRESSION ')' {printf("OPTIONAL_ARGS_EXPRESSION EXISTS\n");}
   | /* NULL */ {printf("OPTIONAL_ARGS_EXPRESSION NULL\n");}
   ;
 
