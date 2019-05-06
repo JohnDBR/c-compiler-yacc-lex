@@ -14,7 +14,7 @@ gcc lex.yy.c y.tab.c -o RR.out
 echo "-------------------------------------------------"
 echo "Corriendo archivo RR.out con el archivo de prueba!"
 ./RR.out /home/john/Documents/LaboratorioCompiladores/c-compiler-yacc-lex/TXTs/prueba2.txt 
- #archivoDePrueba.txt 
+ #archivoDePrueba.txt  
 echo "-------------------------------------------------"
 echo "Imprimiendo archivo de entrada"
 echo " "

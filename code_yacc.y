@@ -71,67 +71,68 @@
 %%
 
 PROGRAM: 
-    LIBRARY OPTIONAL_DECLARATION BEGIN_FUNCTION {printf("PROGRAM LEFT\n");}
-  | OPTIONAL_DECLARATION BEGIN_FUNCTION {printf("PROGRAM RIGHT\n");}
+    LIBRARY OPTIONAL_DECLARATION BEGIN_FUNCTION 
+  | OPTIONAL_DECLARATION BEGIN_FUNCTION 
+  // | error { printError(@$.last_column); }
   ;
 
 DECLARATION:
-    PRIMITIVE ID '=' CTES ';' {printf("DECLARATION LEFT\n");}
-  | PRIMITIVE ID '=' CTES DECLARATION_LIST ';' {printf("DECLARATION RIGHT - ");}
-  | PRIMITIVE ASSIGN_EXPRESSIONS ';' {printf("PRIMITIVE ASSIGN_EXPRESSIONS");}
-  | PRIMITIVE ASSIGN_EXPRESSIONS ASSIGN_EXPRESSIONS_LIST ';' {printf("PRIMITIVE ASSIGN_EXPRESSIONS ASSIGN_EXPRESSIONS_LIST");}
+    PRIMITIVE ID '=' CTES ';' 
+  | PRIMITIVE ID '=' CTES DECLARATION_LIST ';' 
+  | PRIMITIVE ASSIGN_EXPRESSIONS ';' 
+  | PRIMITIVE ASSIGN_EXPRESSIONS ASSIGN_EXPRESSIONS_LIST ';' 
   | PRIMITIVE ID ';'
    ;
 
 OPTIONAL_DECLARATION:
-    DECLARATION {printf("DECLARATION EXISTS\n");}
-  | /* NULL */ {printf("DECLARATION NULL\n");}
+    DECLARATION 
+  | /* NULL */ 
   ;
 
 DECLARATION_LIST:
-    ',' ID '=' CTES {printf("DECLARATION_LIST LEFT\n");}
-  | ',' ID '=' CTES ',' DECLARATION_LIST {printf("DECLARATION_LIST RIGHT - ");}
+    ',' ID '=' CTES 
+  | ',' ID '=' CTES ',' DECLARATION_LIST 
   ;
 
 ASSIGN_EXPRESSIONS_LIST:
-    ',' ASSIGN_EXPRESSIONS {printf("EXPRESSIONS_LISTS LEFT");}
-  | ',' ASSIGN_EXPRESSIONS ',' ASSIGN_EXPRESSIONS_LIST {printf("EXPRESSIONS_LISTS RIGHT");}
+    ',' ASSIGN_EXPRESSIONS 
+  | ',' ASSIGN_EXPRESSIONS ',' ASSIGN_EXPRESSIONS_LIST 
   ;
 
 BEGIN_FUNCTION: 
-  VOID_PRIMITIVE MAIN '(' OPTIONAL_ARGS ')' '{' STATEMENT_LIST '}' {printf("BEGIN_FUNCTION\n");} ; 
+  VOID_PRIMITIVE MAIN '(' OPTIONAL_ARGS ')' '{' STATEMENT_LIST '}'; 
 
 OPTIONAL_ARGS:
-      ARGS {printf("OPTIONAL_ARGS EXISTS\n");}
-    | /* NULL */ {printf("OPTIONAL_ARGS NULL\n");}
+      ARGS 
+    | /* NULL */ 
     ;
 
 VOID_PRIMITIVE:
-    VOID {printf("VOID\n");}
-  | PRIMITIVE {printf("PRIMITIVE\n");}
+    VOID 
+  | PRIMITIVE 
   ;
 
 STATEMENT:
-    ';' {printf("STATEMENT ;\n");}  
-  | DECLARATION {printf("DECLARATION\n");}                         
-  | EXPRESSION ';' {printf("EXPRESSION ;\n");}    
-  | ASSIGN_EXPRESSIONS ';' {printf("ASSIGN_EXPRESSIONS ;\n");}                
-  | PRINT OPTIONAL_ARGS_EXPRESSION ';' {printf("PRINT OPTIONAL_ARGS_EXPRESSION ;\n");}               
-  | SCAN OPTIONAL_ARGS_EXPRESSION ';' {printf("SCAN OPTIONAL_ARGS_EXPRESSION ;\n");} 
-  | ID '=' EXPRESSION ';' {printf("ID = EXPRESSION\n");} 
-  | WHILE '(' EXPRESSION ')' STATEMENT {printf("WHILE (EXPRESSION)\n");}         
-  | IF '(' EXPRESSION ')' STATEMENT {printf("IF (EXPRESSION) STATEMENT\n");} 
-  | IF '(' EXPRESSION ')' STATEMENT ELSE STATEMENT {printf("IF (EXPRESSION) STATEMENT ELSE STATEMENT\n");} 
-  | '{' STATEMENT_LIST '}' {printf("{STATEMENSTATEMENT_LISTT_LIST\n");} 
-  | FOR_STATEMENT {printf("FOR_STATEMENT\n");} 
+    ';'  
+  | DECLARATION                        
+  | EXPRESSION ';'   
+  | ASSIGN_EXPRESSIONS ';'                
+  | PRINT OPTIONAL_ARGS_EXPRESSION ';'               
+  | SCAN OPTIONAL_ARGS_EXPRESSION ';' 
+  | ID '=' EXPRESSION ';' 
+  | WHILE '(' EXPRESSION ')' STATEMENT          
+  | IF '(' EXPRESSION ')' STATEMENT 
+  | IF '(' EXPRESSION ')' STATEMENT ELSE STATEMENT  
+  | '{' STATEMENT_LIST '}' 
+  | FOR_STATEMENT 
   // | error { printError(@$.last_column); }
-  | DO_STATEMENT {printf("DO_STATEMENT\n");} 
-  | SWITCH_STATEMENT {printf("SWITCH_STATEMENT\n");} 
+  | DO_STATEMENT 
+  | SWITCH_STATEMENT 
   ;
 
 STATEMENT_LIST:
-    STATEMENT {printf("STATEMENT_LIST LEFT\n");}
-  | STATEMENT STATEMENT_LIST {printf("STATEMENT_LIST RIGHT\n");}   
+    STATEMENT 
+  | STATEMENT STATEMENT_LIST 
   ;
 
 FOR_STATEMENT:
@@ -140,116 +141,114 @@ FOR_STATEMENT:
   ASSIGN_LOGIC_EXPRESSION ';'
   ASSIGN_MATH_EXPRESSION ')' 
   STATEMENT
-  {printf("FOR\n");}
   // | error {printError(@$.last_column);}
   ;       
 
 DO_STATEMENT: 
-  DO '{' STATEMENT '}' WHILE '(' EXPRESSION ')' ';' {printf("DO\n");} ;
+  DO '{' STATEMENT '}' WHILE '(' EXPRESSION ')' ';';
 
 SWITCH_STATEMENT:
   SWITCH '(' EXPRESSION ')' '{' 
   CASES
   DEFAULT_STATEMENT
-  {printf("SWITCH\n");}
   ;
 
 CASES:
-    CASE EXPRESSION ':' STATEMENT BREAK ';' {printf("CASES LEFT\n");}
-  | CASE EXPRESSION ':' STATEMENT BREAK ';' CASES {printf("CASES RIGHT - ");}
+    CASE EXPRESSION ':' STATEMENT BREAK ';' 
+  | CASE EXPRESSION ':' STATEMENT BREAK ';' CASES 
   ;
 
 DEFAULT_STATEMENT:
-    DEFAULT ':' STATEMENT '}' {printf("DEFAULT_STATEMENT LEFT\n");}
-  | '}' {printf("DEFAULT_STATEMENT RIGHT\n");}
+    DEFAULT ':' STATEMENT '}' 
+  | '}' 
   ;
 
 INT_CTES:
-    ID {printf("INT_CTES LEFT\n");}
-  | CTE_INT {printf("INTE_CTES RIGHT\n");}
+    ID 
+  | CTE_INT 
   ;     
 
 ASSIGN_EXPRESSIONS:
-    ID '=' LOGIC_EXPRESSION {printf("LOGIC_EXPRESSION LEFT\n");}
-  | ID '=' MATH_EXPRESSION {printf("ASSIGN_MATH_EXPRESSION RIGHT\n");}
+    ID '=' LOGIC_EXPRESSION 
+  | ID '=' MATH_EXPRESSION 
   ;
 
 MATH_EXPRESSION:
-    EXPRESSION MATH_OPS EXPRESSION {printf("EXPRESSION MATH_OPS EXPRESSION\n");}
-  | OP_INCREMENT ID {printf("OP_INCREMENT EXPRESSION\n");}
-  | ID OP_INCREMENT {printf("ID OP_INCREMENT\n");}
-  | OP_DECREMENT ID {printf("OP_DECREMENT EXPRESSION\n");}
-  | ID OP_DECREMENT {printf("ID OP_DECREMENT\n");}
+    EXPRESSION MATH_OPS EXPRESSION 
+  | OP_INCREMENT ID 
+  | ID OP_INCREMENT 
+  | OP_DECREMENT ID 
+  | ID OP_DECREMENT 
   ;
 
 ASSIGN_MATH_EXPRESSION:
-    ID '=' MATH_EXPRESSION {printf("ASSIGN_MATH_EXPRESSION LEFT\n");}
-  | MATH_EXPRESSION {printf("ASSIGN_MATH_EXPRESSION RIGHT\n");}
+    ID '=' MATH_EXPRESSION 
+  | MATH_EXPRESSION 
   ;
 
 LOGIC_EXPRESSION:
-    '!' EXPRESSION {printf("!EXPRESSION\n");}
-  | EXPRESSION LOGIC_OPS EXPRESSION {printf("EXPRESSION LOGIC_OPS EXPRESSION\n");}
-  | CTE_BOOL {printf("CTE_BOOL\n");}
+    '!' EXPRESSION 
+  | EXPRESSION LOGIC_OPS EXPRESSION 
+  | CTE_BOOL 
   ;
 
 ASSIGN_LOGIC_EXPRESSION:
-    ID '=' LOGIC_EXPRESSION {printf("LOGIC_EXPRESSION LEFT\n");}
-  | LOGIC_EXPRESSION {printf("LOGIC_EXPRESSION RIGHT - ");}
+    ID '=' LOGIC_EXPRESSION 
+  | LOGIC_EXPRESSION 
   ;
 
 EXPRESSION:
-    CTES {printf("CTES\n");}
-	| MATH_EXPRESSION {printf("MATH_EXPRESSION\n");}
-  | LOGIC_EXPRESSION {printf("LOGIC_EXPRESSION\n");}
-  | '(' EXPRESSION ')' {printf("EXPRESSION\n");}   
+    CTES 
+	| MATH_EXPRESSION 
+  | LOGIC_EXPRESSION 
+  | '(' EXPRESSION ')'   
   ;
 
 CTES: 
-    ID {printf("CTES ID\n");}
-  | CTE_INT {printf("CTES INT\n");}  
-  | CTE_FLOAT {printf("CTES FLOAT\n");}
-  | CTE_STRING {printf("CTES STRING\n");}
-  | CTE_BOOL {printf("CTES BOOL");}
-  | STRING_CHAIN {printf("CTES STRING CHAIN\n");}
+    ID 
+  | CTE_INT 
+  | CTE_FLOAT 
+  | CTE_STRING 
+  | CTE_BOOL 
+  | STRING_CHAIN 
   ;
 
 STRING_CHAIN:
-  '"' CHAIN {printf("STRING_CHAIN - ");} ; 
+  '"' CHAIN; 
 
 CHAIN:
-    CTES CHAIN {printf("CHAIN LEFT - ");}
-  | '"' {printf("CHAIN RIGHT\n");}
+    CTES CHAIN 
+  | '"' 
   ;
 
 MATH_OPS:
-    '^' {printf("^\n");}
-  | '+' {printf("+\n");}
-  | '-' {printf("-\n");}
-  | '*' {printf("*\n");}
-  | '/' {printf("/\n");}
-  | '%' {printf("% \n");}
+    '^' 
+  | '+' 
+  | '-' 
+  | '*' 
+  | '/'
+  | '%' 
   ;
 
 LOGIC_OPS:   
-    OP_AND {printf("OP_AND\n");}
-  | OP_OR  {printf("OP_OR\n");}
-  | OP_EQ  {printf("OP_EQ\n");}
-  | OP_NEQ {printf("OP_NEQ\n");}
-  | OP_LEQ {printf("OP_LEQ\n");}
-  | OP_GEQ {printf("OP_GEQ\n");}
-  | '<' {printf("<\n");}
-  | '>' {printf(">\n");}
+    OP_AND 
+  | OP_OR  
+  | OP_EQ  
+  | OP_NEQ 
+  | OP_LEQ 
+  | OP_GEQ 
+  | '<' 
+  | '>' 
   ;
 
 ARGS_EXPRESSION:
-    EXPRESSION {printf("ARGS_EXPRESSION LEFT - ");}
-  | ARGS_EXPRESSION ',' ARGS_EXPRESSION {printf("ARGS_EXPRESSION RIGHT\n");}
+    EXPRESSION 
+  | ARGS_EXPRESSION ',' ARGS_EXPRESSION 
   ;
 
 OPTIONAL_ARGS_EXPRESSION:
-    '(' ARGS_EXPRESSION ')' {printf("OPTIONAL_ARGS_EXPRESSION EXISTS\n");}
-  | /* NULL */ {printf("OPTIONAL_ARGS_EXPRESSION NULL\n");}
+    '(' ARGS_EXPRESSION ')' 
+  | /* NULL */ 
   ;
 
 %%
