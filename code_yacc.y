@@ -73,7 +73,7 @@
 PROGRAM: 
     LIBRARY OPTIONAL_DECLARATION BEGIN_FUNCTION 
   | OPTIONAL_DECLARATION BEGIN_FUNCTION 
-  // | error { printError(@$.last_column); }
+  | error { printError(@$.last_column); }
   ;
 
 DECLARATION:
@@ -125,7 +125,7 @@ STATEMENT:
   | IF '(' EXPRESSION ')' STATEMENT ELSE STATEMENT  
   | '{' STATEMENT_LIST '}' 
   | FOR_STATEMENT 
-  // | error { printError(@$.last_column); }
+  | error { printError(@$.last_column); }
   | DO_STATEMENT 
   | SWITCH_STATEMENT 
   ;
@@ -278,37 +278,8 @@ int main(int argc, char *argv[]) {
 	yyin = fp;
 	yyout = out_file;
 
-	// yylex();
-	// do {
-	// 	yyparse();
-	// } while (!feof(yyin));
 	yyparse();
-
-	// fprintf(out_file,"\n\nTABLA DE INDENTIFICADORES\n");
-	// fprintf(out_file, "Hay %d identificadores\n", idC-1);
-	// // fprintf(out_file, "%s", ids);
-	// if (idC>1)
-	// {
-	//   int i=0;
-	//   fprintf(out_file, "Id=");
-	//   while (i < strlen(ids)) 
-	//   {    
-	//     fprintf(out_file, "%c", ids[i]);
-	//     if (ids[i] == ';')
-	//     {
-	//       fprintf(out_file, " Id=");
-	//     }
-	//     i = i + 1;
-	//   }
-	// }
-	// fprintf(out_file, "\n");
-
-	// fprintf(out_file,"\n\nERRORES LEXICOS\n");
-	// fprintf(out_file, "Hay %d errores lexicos\n", lexErrorsC-1);
-	// fprintf(out_file, "%s", lexErrors);
-	
-	// fprintf(out_file, "\n");
-	// fprintf(out_file,"\n\nHay %d lineas de codigo\n", lines);
+  printTables();
 	fclose(out_file);
 	fclose(fp);
 

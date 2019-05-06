@@ -162,3 +162,30 @@ ERROR 		[0-9]+[0-9a-zA-Z]+
 
 %%
 
+void printTables() {
+  fprintf(yyout,"\n\nTABLA DE INDENTIFICADORES\n");
+	fprintf(yyout, "Hay %d identificadores\n", idC-1);
+	// fprintf(yyout, "%s", ids);
+	if (idC>1)
+	{
+	  int i=0;
+	  fprintf(yyout, "Id=");
+	  while (i < strlen(ids)) 
+	  {    
+	    fprintf(yyout, "%c", ids[i]);
+	    if (ids[i] == ';')
+	    {
+	      fprintf(yyout, " Id=");
+	    }
+	    i = i + 1;
+	  }
+	}
+	fprintf(yyout, "\n");
+
+	fprintf(yyout,"\n\nERRORES LEXICOS\n");
+	fprintf(yyout, "Hay %d errores lexicos\n", lexErrorsC-1);
+	fprintf(yyout, "%s", lexErrors);
+	
+	fprintf(yyout, "\n");
+	fprintf(yyout,"\n\nHay %d lineas de codigo\n", lines);
+}
