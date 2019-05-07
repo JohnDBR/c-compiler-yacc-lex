@@ -9,10 +9,12 @@
 /* Esta libreria es necesaria para el atoi() atof() */	
 //#include <math.h>
 int idC = 1;
-char ids[];
+char ids[100000];
 int lexErrorsC = 1;
-char lexErrors[];
+char lexErrors[100000];
 int lines = 1;
+int yaccErrorsC = 1;
+char yaccErrors[100000];
 // void yyerror(char *);
 %}
 	
@@ -145,6 +147,7 @@ ERROR 		[0-9]+[0-9a-zA-Z]+
 				        strcat(lexErrors,yytext);
 				        lexErrorsC = lexErrorsC + 1;
 				    }
+					// saveError(1);
 					// yyerror("Unknown character");
 				}
 .           	{fprintf(yyout, "CARACTER-NO-RECONOCIDO:%s", yytext);
@@ -157,10 +160,53 @@ ERROR 		[0-9]+[0-9a-zA-Z]+
 						strcat(lexErrors,yytext);
 						lexErrorsC = lexErrorsC + 1;
 					}
+					// saveError(1);
 					// yyerror("Unknown character!");
 				}
 
 %%
+
+void printError() {
+//   fprintf(stdout, "Error in line %d Syntax Error\n", (yylineno-1));
+}
+
+void saveError(int lex, char *s) {
+	char *token;
+	char temp[1000];
+	char error_word[1000];
+	if (lex) {
+		snprintf(error_word, 20, "%d Lex", lines);
+	} else {
+		snprintf(error_word, 20, "%d Syntax", lines);
+	}
+	strcpy(temp,yaccErrors);
+	int save = 1;
+	token = strtok(temp, ";");
+	while(token != NULL && save) 
+	{
+		if (strcmp(token,error_word) == 0)
+		{
+			save = 0;
+		}
+		token = strtok(NULL, ";");
+	}
+	if (save)
+	{
+		// printf("\n----------\n");
+		if (yaccErrorsC > 1)
+		{
+			strcat(yaccErrors,";");
+		}
+		// printf("\n");
+		// printf(yaccErrors);
+		// printf("%s\n", error_word);
+		// strcat(yaccErrors, error_word);//, strlen(error_word)+5);
+		sprintf(yaccErrors, "%s%s", yaccErrors, error_word);
+		yaccErrorsC = yaccErrorsC + 1;
+		// printf("\n%d", yaccErrorsC);
+		// printf("\n----------\n");
+	}
+}
 
 void printTables() {
   fprintf(yyout,"\n\nTABLA DE INDENTIFICADORES\n");
@@ -187,5 +233,30 @@ void printTables() {
 	fprintf(yyout, "%s", lexErrors);
 	
 	fprintf(yyout, "\n");
-	fprintf(yyout,"\n\nHay %d lineas de codigo\n", lines);
+	fprintf(yyout,"\nHay %d lineas de codigo\n", lines);
+
+	fprintf(yyout, "Hay %d errores\n", yaccErrorsC-1);
+	// if (yaccErrorsC>1)
+	// {
+	// 	char *token;
+	// 	token = strtok(yaccErrors, ";");
+	// 	while(token != NULL) {
+	// 		fprintf(yyout, "Error in line %s Error\n", token);
+	// 	}
+	// }
+	if (yaccErrorsC>1)
+	{
+	  int i=0;
+	  fprintf(yyout, "Error in line ");
+	  while (i < strlen(yaccErrors)) 
+	  {    
+	    fprintf(yyout, "%c", yaccErrors[i]);
+	    if (yaccErrors[i] == ';')
+	    {
+	      fprintf(yyout, "\nError in line ");
+	    }
+	    i = i + 1;
+	  }
+	  fprintf(yyout,";\n");
+	}
 }

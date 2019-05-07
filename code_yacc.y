@@ -73,7 +73,7 @@
 PROGRAM: 
     LIBRARY OPTIONAL_DECLARATION BEGIN_FUNCTION 
   | OPTIONAL_DECLARATION BEGIN_FUNCTION 
-  | error { printError(@$.last_column); }
+  | error //{ saveError(0); }//printError(@$.last_column); }
   ;
 
 DECLARATION:
@@ -125,7 +125,7 @@ STATEMENT:
   | IF '(' EXPRESSION ')' STATEMENT ELSE STATEMENT  
   | '{' STATEMENT_LIST '}' 
   | FOR_STATEMENT 
-  | error { printError(@$.last_column); }
+  | error //{ saveError(0); }//printError(@$.last_column); }
   | DO_STATEMENT 
   | SWITCH_STATEMENT 
   ;
@@ -261,10 +261,7 @@ extern int yylineno;
 
 void yyerror(char *s) {
   fprintf(stdout, "Error in line %d: %s\n", (yylineno-1), s);
-}
-
-void printError(int a) {
-  fprintf(stdout, "Error in line %d:%d Syntax Error\n", (yylineno-1), a);
+  saveError(0, s);
 }
 
 int main(int argc, char *argv[]) {

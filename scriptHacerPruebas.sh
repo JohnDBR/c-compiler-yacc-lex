@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "-------------------------------------------------"
 echo "Borrando archivos...!"
-rm -rf lex.yy.c y.tab.h y.tab.c salida.txt
+sudo rm -rf lex.yy.c y.tab.h y.tab.c salida.txt
 echo "-------------------------------------------------"
 echo "Generando archivo lex.yy.c!"
 lex code_lex.l
