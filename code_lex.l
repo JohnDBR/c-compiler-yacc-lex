@@ -147,7 +147,7 @@ ERROR 		[0-9]+[0-9a-zA-Z]+
 				        strcat(lexErrors,yytext);
 				        lexErrorsC = lexErrorsC + 1;
 				    }
-					// saveError(1);
+					saveError(1, "");
 					// yyerror("Unknown character");
 				}
 .           	{fprintf(yyout, "CARACTER-NO-RECONOCIDO:%s", yytext);
@@ -160,14 +160,14 @@ ERROR 		[0-9]+[0-9a-zA-Z]+
 						strcat(lexErrors,yytext);
 						lexErrorsC = lexErrorsC + 1;
 					}
-					// saveError(1);
+					saveError(1, "");
 					// yyerror("Unknown character!");
 				}
 
 %%
 
 void printError() {
-//   fprintf(stdout, "Error in line %d Syntax Error\n", (yylineno-1));
+  fprintf(stdout, "Error in line %d Syntax Error\n", (yylineno-1));
 }
 
 void saveError(int lex, char *s) {
@@ -192,26 +192,18 @@ void saveError(int lex, char *s) {
 	}
 	if (save)
 	{
-		// printf("\n----------\n");
 		if (yaccErrorsC > 1)
 		{
 			strcat(yaccErrors,";");
 		}
-		// printf("\n");
-		// printf(yaccErrors);
-		// printf("%s\n", error_word);
-		// strcat(yaccErrors, error_word);//, strlen(error_word)+5);
 		sprintf(yaccErrors, "%s%s", yaccErrors, error_word);
 		yaccErrorsC = yaccErrorsC + 1;
-		// printf("\n%d", yaccErrorsC);
-		// printf("\n----------\n");
 	}
 }
 
 void printTables() {
   fprintf(yyout,"\n\nTABLA DE INDENTIFICADORES\n");
 	fprintf(yyout, "Hay %d identificadores\n", idC-1);
-	// fprintf(yyout, "%s", ids);
 	if (idC>1)
 	{
 	  int i=0;
@@ -236,14 +228,6 @@ void printTables() {
 	fprintf(yyout,"\nHay %d lineas de codigo\n", lines);
 
 	fprintf(yyout, "Hay %d errores\n", yaccErrorsC-1);
-	// if (yaccErrorsC>1)
-	// {
-	// 	char *token;
-	// 	token = strtok(yaccErrors, ";");
-	// 	while(token != NULL) {
-	// 		fprintf(yyout, "Error in line %s Error\n", token);
-	// 	}
-	// }
 	if (yaccErrorsC>1)
 	{
 	  int i=0;

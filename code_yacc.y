@@ -6,12 +6,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <ctype.h>
-// int idC = 1;
-// char ids[];
-// int lexErrorsC = 1;
-// char lexErrors[];
-// // int lines = 1;
-// void yyerror(char *);
 %}
 
 %token LIBRARY
@@ -73,7 +67,7 @@
 PROGRAM: 
     LIBRARY OPTIONAL_DECLARATION BEGIN_FUNCTION 
   | OPTIONAL_DECLARATION BEGIN_FUNCTION 
-  | error //{ saveError(0); }//printError(@$.last_column); }
+  | error //{ saveError(0); }
   ;
 
 DECLARATION:
@@ -125,7 +119,7 @@ STATEMENT:
   | IF '(' EXPRESSION ')' STATEMENT ELSE STATEMENT  
   | '{' STATEMENT_LIST '}' 
   | FOR_STATEMENT 
-  | error //{ saveError(0); }//printError(@$.last_column); }
+  | error //{ saveError(0); }
   | DO_STATEMENT 
   | SWITCH_STATEMENT 
   ;
@@ -141,7 +135,6 @@ FOR_STATEMENT:
   ASSIGN_LOGIC_EXPRESSION ';'
   ASSIGN_MATH_EXPRESSION ')' 
   STATEMENT
-  // | error {printError(@$.last_column);}
   ;       
 
 DO_STATEMENT: 
@@ -267,7 +260,7 @@ void yyerror(char *s) {
 int main(int argc, char *argv[]) {
 	printf("Lo que has recibido en el argv[1] es: %s\n", argv[1]);
 	FILE *fp = fopen(argv[1], "r");
-	FILE *out_file = fopen("salida.txt", "w"); // write only
+	FILE *out_file = fopen("salida.txt", "w"); 
 	if (!fp) {
 		fprintf(out_file,"\nNo se encuentra el archivo...\n");
 		return(-1);
