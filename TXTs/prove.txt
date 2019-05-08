@@ -1,0 +1,15 @@
+int ab = 2 + 2;
+int a = 1 + 1;
+int y = a % 3;
+int c = 2 + 2;
+int i = 2;
+float main(){
+
+}
+
+/* void main ()
+{
+xxxx
+int yy=0;
+float l,o;
+} */
