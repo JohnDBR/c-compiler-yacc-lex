@@ -25,6 +25,8 @@ ERROR 		[0-9]+[0-9a-zA-Z]+
 %%
 
 "\#"" "*"include"" "*"<".*">"    {fprintf(yyout, "INCLUIR-LIBRERIA:%s", yytext); return LIBRARY;}
+"include"		{fprintf(yyout, "INCLUIR-LIBRERIA:%s", yytext); return INCLUDE;}
+".h"				{fprintf(yyout, "EXTENSION-LIBRERI:%s",yytext); return LIBRARY_EXTENSION;}
 
 "main"			{fprintf(yyout, "MAIN:%s", yytext); return MAIN;}
 "void"			{fprintf(yyout, "VOID:%s", yytext); return VOID;}
@@ -91,6 +93,7 @@ ERROR 		[0-9]+[0-9a-zA-Z]+
 "(" 			{fprintf(yyout, "PARENT-A:%s", yytext); return '(';}
 ")" 			{fprintf(yyout, "PARENT-C:%s", yytext); return ')';}
 \"				{fprintf(yyout, "QUOTE:%s", yytext); return '"';}
+\#        {fprintf(yyout, "INSERT:%s", yytext); return '#';} 
 
 "*"				{fprintf(yyout, "OP-MULT:%s", yytext); return '*';}
 "+"				{fprintf(yyout, "OP-SUMA:%s", yytext); return '+';}

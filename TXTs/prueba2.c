@@ -1,4 +1,8 @@
 #include <stdio.h>
+#include <stdio.h>
+#include <stdio.h>
+#include <stdio.h>
+
 void main(){ 
 int i,x;
 float media,media2;

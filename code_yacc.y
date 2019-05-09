@@ -9,6 +9,8 @@
 %}
 
 %token LIBRARY
+%token INCLUDE
+%token LIBRARY_EXTENSION
 %token MAIN
 %token VOID
 %token PRINT
@@ -59,6 +61,7 @@
 %token '}'
 %token ';'
 %token ','
+%token '#'
 
 %start PROGRAM
 
@@ -67,13 +70,19 @@
 PROGRAM: 
   //  BOOKSTORE BEGIN_FUNCTION 
     BOOKSTORE OPTIONAL_DECLARATION
-  // | error OPTIONAL_LIST_ASSIGN_EXPRESSION '{' STATEMENT_LIST '}'
+  | error OPTIONAL_LIST_ASSIGN_EXPRESSION '{' STATEMENT_LIST '}'
   // | error //{ saveError(0); }
   ;
 
 BOOKSTORE:
-    LIBRARY BOOKSTORE
+    BOOKSHELVE BOOKSTORE
   | /* NULL */
+  ;
+
+BOOKSHELVE:
+    LIBRARY
+  | '#' INCLUDE '<' ID LIBRARY_EXTENSION '>'
+  | error
   ;
 
 DECLARATION:
@@ -90,7 +99,7 @@ OPTIONAL_DECLARATION:
     INIT
   | DECLARATION
   | DECLARATION OPTIONAL_DECLARATION
-  // | error
+  | error
   // | error OPTIONAL_LIST_ASSIGN_EXPRESSION '{' STATEMENT_LIST '}'
   ;
 
@@ -114,13 +123,13 @@ ASSIGN_EXPRESSIONS_LIST:
 BEGIN_FUNCTION: 
     VOID_PRIMITIVE MAIN '(' OPTIONAL_ARGS ')' '{' STATEMENT_LIST '}'
   | error '{' STATEMENT_LIST '}'
-  | error //{ saveError(0); }
+  // | error //{ saveError(0); }
   ; 
 
 OPTIONAL_ARGS:
-      ARGS 
-    | /* NULL */ 
-    ;
+    ARGS 
+  | /* NULL */ 
+  ;
 
 VOID_PRIMITIVE:
     VOID 
@@ -129,7 +138,7 @@ VOID_PRIMITIVE:
 
 STATEMENT:
     ';'  
-  | DECLARATION                        
+  | DECLARATION                   
   | EXPRESSION ';'   
   | ASSIGN_EXPRESSIONS ';'                
   | PRINT OPTIONAL_ARGS_EXPRESSION ';'               
@@ -140,9 +149,9 @@ STATEMENT:
   | IF '(' EXPRESSION ')' STATEMENT ELSE STATEMENT  
   | '{' STATEMENT_LIST '}' 
   | FOR_STATEMENT 
-  | error //{ saveError(0); }
   | DO_STATEMENT 
-  | SWITCH_STATEMENT 
+  | SWITCH_STATEMENT
+  | error //{ saveError(0); }
   ;
 
 STATEMENT_LIST:
@@ -174,12 +183,14 @@ SWITCH_STATEMENT:
   ;
 
 CASES:
-    CASE EXPRESSION ':' STATEMENT BREAK ';' 
-  | CASE EXPRESSION ':' STATEMENT BREAK ';' CASES 
+    CASE EXPRESSION ':' STATEMENT_LIST BREAK ';' 
+  | CASE EXPRESSION ':' STATEMENT_LIST BREAK ';' CASES
+  | CASE EXPRESSION ':' STATEMENT_LIST error CASES
+  | error 
   ;
 
 DEFAULT_STATEMENT:
-    DEFAULT ':' STATEMENT '}' 
+    DEFAULT ':' STATEMENT_LIST '}' 
   | '}' 
   ;
 
